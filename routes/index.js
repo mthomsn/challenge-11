@@ -1,17 +1,8 @@
 const express = require('express');
-const index = express();
-const uuid = require('../helpers/uuid');
-const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
+const notesRouter = require('./notes');
 
-// GET route
-index.get('/notes', (req, res) => {
-  console.info(`${req.method} request received.`);
+const app = express();
 
-  readFromFile('../db/db.json').then((data) => res.json(JSON.parse(data)));
-});
+app.use('/notes', notesRouter);
 
-// POST route
-
-// DELETE route
-
-module.exports = index;
+module.exports = app;
