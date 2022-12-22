@@ -1,35 +1,30 @@
-const notes = require('express').Router();
-const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
-const uuid = require('../helpers/uuid');
+const router = require('express').Router();
+const dbActions = require('../db/actions')
 
 // GET route
-notes.get('/', (req, res) => {
-  console.info(`${req.method} request received`);
-
-  readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
+router.get('/', (req, res) => {
+  dbActions
+    .getNotes()
+    .then((notes) => {
+      return res.json(notes);
+    })
+    .catch((err) => res.status(500).json(err));
 })
 
 // POST route
-notes.post('/', (req, res) => {
-  console.info(`${req.method} request received to add a tip`);
-  console.log(req.body);
-
-  const { title, text } = req.body;
-
-  if (req.body) {
-    const newNote = {
-      title,
-      text,
-      tip_id: uuid(),
-    };
-
-    readAndAppend(newNote, './db/db.json');
-    res.json(`Tip added successfully 🚀`);
-  } else {
-    res.json('Error in adding tip');
-  }
+router.post('/', (req, res) => {
+  dbActions
+    .addNote(req.body)
+    .then((note) => res.json(note))
+    .catch((err) => res.status(500).json(err));
 });
 
 // DELETE route
+router.delete('/:id', (req, res) => {
+  dbActions
+    .removeNote(req.params.id)
+    .then(() => res.json({ ok: true }))
+    .catch((err) => res.status(500).json(err));
+});
 
-module.exports = notes;
+module.exports = router;

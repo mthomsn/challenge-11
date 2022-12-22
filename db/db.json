@@ -1,16 +1,1 @@
-[
-    {
-        "title": "Test Title",
-        "text": "Test text"
-    },
-    {
-        "title": "test",
-        "text": "test text",
-        "id": "600b"
-    },
-    {
-        "title": "test",
-        "text": "test text",
-        "tip_id": "3187"
-    }
-]
+[{"title":"Test Note","text":"test","id":"abc2ff68-eddc-4b03-9404-a62fd2bfe8f6"}]
